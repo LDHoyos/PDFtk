@@ -56,6 +56,51 @@ El objeto principal debe ser `intakeData`. Dentro de él, la estructura esperada
 }
 ```
 
+```
+
+## Manejo de Respuesta (Frontend)
+
+El servidor devuelve **el archivo PDF binario** (stream), no un JSON.
+
+**Cómo consumirlo en JavaScript:**
+
+```javascript
+/* 
+  Ejemplo con fetch() 
+*/
+const response = await fetch('https://pdftk.onrender.com/api/fill-i589-preview', {
+  method: 'POST',
+  headers: { 
+    'Content-Type': 'application/json',
+    // 'Authorization': 'Bearer ...' 
+  },
+  body: JSON.stringify({ intakeData: ... }) 
+});
+
+if (!response.ok) {
+  const errorJson = await response.json(); // Si falla, sí devuelve JSON
+  console.error('Error:', errorJson);
+  return;
+}
+
+// 1. Convertir la respuesta a BLOB (Importante)
+const pdfBlob = await response.blob();
+
+// 2. Crear una URL local para visualizarlo o descargarlo
+const pdfUrl = URL.createObjectURL(pdfBlob);
+
+// Opción A: Abrir en nueva pestaña
+window.open(pdfUrl);
+
+// Opción B: Forzar descarga
+/*
+const link = document.createElement('a');
+link.href = pdfUrl;
+link.download = "formulario-i589.pdf";
+link.click();
+*/
+```
+
 ## Campos Soportados
 
 El servicio mapea automáticamente los siguientes datos del JSON a los campos del formulario I-589:

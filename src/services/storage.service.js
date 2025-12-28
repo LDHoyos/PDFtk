@@ -36,7 +36,8 @@ async function downloadTemplate() {
         throw new Error('Failed to download template')
     }
 
-    return await response.arrayBuffer()
+    const arrayBuffer = await response.arrayBuffer()
+    return Buffer.from(arrayBuffer)
 }
 
 module.exports = { downloadTemplate }
