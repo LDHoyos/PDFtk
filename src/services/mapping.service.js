@@ -58,12 +58,12 @@ function mapIntakeToFDF(intakeData, clientData) {
         'form1[0].#subform[0].TextField1[3]': personal.nationality || '',
 
         // Checkboxes: Sexo (Normalizado a Technical Keys del PDFtk)
-        ...(gender === 'male' ? { 'form1[0].#subform[0].PartALine9Sex[0]': 'M' } : {}),
-        ...(gender === 'female' ? { 'form1[0].#subform[0].PartALine9Sex[1]': 'F' } : {}),
+        ...(gender === 'male' ? { 'form1[0].#subform[0].PartALine9Sex[0]': '8' } : {}),
+        ...(gender === 'female' ? { 'form1[0].#subform[0].PartALine9Sex[1]': '8' } : {}),
 
         // Checkboxes: Estado Civil
-        ...(marital === 'single' ? { 'form1[0].#subform[0].Marital[0]': 'S' } : {}),
-        ...(marital === 'married' ? { 'form1[0].#subform[0].Marital[1]': 'M' } : {}),
+        ...(marital === 'single' ? { 'form1[0].#subform[0].Marital[0]': '8' } : {}),
+        ...(marital === 'married' ? { 'form1[0].#subform[0].Marital[1]': '8' } : {}),
 
         // Dirección (Physically Reside)
         'form1[0].#subform[0].PtAILine8_StreetNumandName[0]': personal.current_address?.street || '',

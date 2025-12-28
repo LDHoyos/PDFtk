@@ -135,4 +135,22 @@ El servicio mapea automáticamente los siguientes datos del JSON a los campos de
 - `spouse.date_of_birth` -> Spouse Date of Birth
 
 > [!TIP]
-> **Campos Faltantes**: Si el PDF tiene más campos que no se llenan, asegúrate de que el objeto JSON enviado contenga las claves exactas mencionadas arriba. Si necesitas agregar nuevos campos, debes actualizar `src/services/mapping.service.js`.
+
+## Referencia de Checkboxes
+
+Para que los checkboxes se marquen correctamente, el backend espera que envíes ciertos valores en el JSON (o realiza una conversión interna).
+
+### Género (`personal_info.gender`)
+El backend normaliza tu input, pero idealmente envía:
+- `"Male"`, `"Masculino"`, `"M"` -> Se marca **Male**.
+- `"Female"`, `"Femenino"`, `"F"` -> Se marca **Female**.
+
+### Estado Civil (`personal_info.marital_status`)
+- `"Single"`, `"Soltero"`, `"S"` -> Se marca **Single**.
+- `"Married"`, `"Casado"`, `"M"` -> Se marca **Married**.
+- `"Divorced"`, `"Divorciado"`, `"D"` -> Se marca **Divorced**.
+- `"Widowed"`, `"Viudo"`, `"W"` -> Se marca **Widowed**.
+
+> [!NOTE]
+> No necesitas enviar el valor "M" o "S" exacto del PDF. El servicio de mapeo (`mapping.service.js`) es inteligente y entiende palabras completas en inglés o español.
+
