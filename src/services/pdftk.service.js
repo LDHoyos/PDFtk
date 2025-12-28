@@ -21,7 +21,8 @@ async function processPdf(data, isPreview = false) {
         const outputPath = path.join(tempDir, 'output.pdf');
 
         // 1. Download template
-        const templateBuffer = await downloadTemplate();
+        const templateData = await downloadTemplate();
+        const templateBuffer = Buffer.from(templateData);
         await fs.writeFile(templatePath, templateBuffer);
 
         // 2. Unlock PDF (remove ownership restrictions)
