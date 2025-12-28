@@ -1,0 +1,42 @@
+{
+  "intakeData": {
+    "personal_info": {
+      "first_name": "Juan",
+      "last_name": "Pérez",
+      "middle_name": "Carlos",
+      "date_of_birth": "1990-01-15",
+      "nationality": "Venezuela",
+      "gender": "Male",
+      "marital_status": "Single",
+      "a_number": "A123456789",
+      "ssn": "123-45-6789",
+      "phone": "(555) 123-4567",
+      "current_address": {
+        "street": "123 Main St",
+        "city": "Miami",
+        "state": "FL",
+        "zip": "33101"
+      }
+    },
+    "processing_info": {
+      "i94_number": "12345678901",
+      "last_entry_date": "2023-06-15",
+      "last_entry_location": "Miami International Airport",
+      "last_entry_status": "B-2 Tourist"
+    },
+    "persecution": {
+      "description": "Descripción detallada de la persecución sufrida en el país de origen..."
+    },
+    "spouse": {
+      "include_in_application": true,
+      "first_name": "María",
+      "last_name": "González",
+      "date_of_birth": "1992-03-20"
+    }
+  },
+  "clientData": {
+    "case_number": "CASE-2025-001",
+    "attorney_name": "John Smith",
+    "firm_name": "Immigration Services Group"
+  }
+}
