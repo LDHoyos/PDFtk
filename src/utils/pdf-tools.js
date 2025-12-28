@@ -1,3 +1,4 @@
+/* src/utils/pdf-tools.js */
 const { exec } = require('child_process');
 const { promisify } = require('util');
 const fs = require('fs').promises;
@@ -6,29 +7,37 @@ const path = require('path');
 
 const execAsync = promisify(exec);
 
-// Detect paths - prioritize local binary paths if on Windows dev, otherwise use global command
+// Detect paths
 const IS_WINDOWS = process.platform === 'win32';
+
+// PDFtk Path
 const PDFTK_PATH = IS_WINDOWS ? '"C:\\Program Files (x86)\\PDFtk Server\\bin\\pdftk.exe"' : 'pdftk';
 
-// Check for local qpdf in project root/bin
-const projectRoot = path.resolve(__dirname, '../../');
-const localQpdfParams = [
-    path.join(projectRoot, 'bin', 'qpdf.exe'),
-    path.join(projectRoot, 'bin', 'mingw64', 'bin', 'qpdf.exe') // Common structure when extracting zip
-];
+// QPDF Path detection
+let QPDF_PATH = 'qpdf'; // Default global command for Linux
 
-let QPDF_PATH = 'qpdf';
-for (const p of localQpdfParams) {
-    if (fsSync.existsSync(p)) {
-        QPDF_PATH = `"${p}"`;
-        break;
+if (IS_WINDOWS) {
+    // Only look for local .exe binaries on Windows
+    const projectRoot = path.resolve(__dirname, '../../');
+    const localQpdfParams = [
+        path.join(projectRoot, 'bin', 'qpdf.exe'),
+        path.join(projectRoot, 'bin', 'mingw64', 'bin', 'qpdf.exe')
+    ];
+
+    for (const p of localQpdfParams) {
+        if (fsSync.existsSync(p)) {
+            QPDF_PATH = `"${p}"`;
+            break;
+        }
     }
 }
 
+// Helper para desbloquear el PDF
 async function unlockPdf(inputPath, outputPath) {
     try {
         console.log(`🔓 Unlocking PDF: ${inputPath} -> ${outputPath}`);
         console.log(`Using QPDF: ${QPDF_PATH}`);
+
         // --decrypt removes restrictions
         await execAsync(`${QPDF_PATH} --decrypt "${inputPath}" "${outputPath}"`);
         return outputPath;
@@ -38,6 +47,7 @@ async function unlockPdf(inputPath, outputPath) {
     }
 }
 
+// Helper para llenar el PDF
 async function fillPdf(inputPath, fdfPath, outputPath, flatten = true) {
     try {
         console.log(`✍️ Filling PDF: ${inputPath} + ${fdfPath} -> ${outputPath}`);
@@ -60,8 +70,6 @@ function generateFdf(fields) {
 `;
 
     for (const [key, value] of Object.entries(fields)) {
-        // Simple escaping for FDF (parentheses and backslashes)
-        // This is a basic implementation. For complex strings, more robust escaping is needed.
         const escapedValue = String(value)
             .replace(/\\/g, '\\\\')
             .replace(/\(/g, '\\(')
